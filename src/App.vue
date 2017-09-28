@@ -1,9 +1,9 @@
 <template>
-  <div id="app" @click="openAside">
+  <div id="app">
     <header>
-      <span class='iconfont icon-ic_menu'></span>
+      <span class='iconfont icon-ic_menu' @click="openAside"></span>
     </header>
-    <aside class="aside" :class="isClicked?'open':'close'">
+    <aside class="aside" :class="{open:isClicked,delay:delayFlag}"   @click="openAside">
       <ul>
         <li @click="chooseTheme(1)" :class="themeNum == 1?'chooseTheme':''">
           <span>首页</span>
@@ -20,7 +20,9 @@
       </ul>
       <div class='cover'></div>
     </aside>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -42,14 +44,23 @@ export default {
       return{
         isClicked : false,
         themes:[],
-        themeNum:1
+        themeNum:1,
+        delayFlag: false
       }
     },
     methods: {
-      openAside:function(){
-        this.isClicked = this.isClicked? false: true;
+      openAside(){
+        if(this.isClicked){
+          this.isClicked = false;
+          setTimeout(function(){
+            this.delayFlag = false;
+          },300)
+        }else{
+          this.isClicked = true;
+          this.delayFlag = true;
+        }
       },
-      chooseTheme:function(index){
+      chooseTheme(index){
         this.themeNum = index;
       }
     }
@@ -69,7 +80,7 @@ export default {
   header{
 	  width: 100%;
 	  height: 4.8rem;
-	  z-index: 2;
+	  z-index: 9;
 	  padding-left: 5%;
 	  position: fixed;
 	  background-image: linear-gradient(0deg,transparent,rgba(0,0,0,.51) 95%);
@@ -87,7 +98,9 @@ export default {
 	  position:absolute;
 	  left:0;
 	  top:0;
-    z-index:9;
+    z-index:11;
+    visibility: hidden;
+    
 	  
 	  .cover{
 	  	background-color:rgba(172,185,201,.4);
@@ -108,7 +121,8 @@ export default {
 	  	padding:4rem 1.5rem 2rem;
 	  	overflow:auto;
 	  	background-color:rgba(91,116,146,.75);
-	  	
+      transform:translate(-100%,0);
+  	  transition:transform 0.3s ease;
 	  }
 
 	  ul::-webkit-scrollbar {
@@ -133,10 +147,11 @@ export default {
 
   }
 
-  .open{
+  .open.aside{
   	ul{
   	  transform:translate(0,0);
       transition:transform 0.3s ease;
+    
   	}
     
     .cover{
@@ -144,12 +159,12 @@ export default {
     }
   }
 
-  .close{
-    ul{
-  	  transform:translate(-100%,0);
-  	  transition:transform 0.3s ease;
-  	}
+
+  .delay.aside{
+    visibility: visible;
   }
+
+  
 }
 
 
