@@ -1,5 +1,5 @@
 <template>
-    <div class="swiper-container">
+    <div class="swiper-container" :class="swiperid">
         <div class="swiper-wrapper">
             <slot name="banner"></slot>
         </div>
@@ -19,14 +19,21 @@
         },
         mounted: function(){
             var that = this;
-            that.mySwiper = new Swiper('.swiper-container',{
+            that.mySwiper = new Swiper('.'+this.swiperid,{
                 autoplay : 5000,
                 //speed:1000,
                 autoplayDisableOnInteraction : false,
                 loop : true,
-                pagination : '.swiper-pagination'
+                pagination : '.swiper-pagination',
+                observer: true
             })
         },
+        props:{
+            swiperid: {
+                type: String,
+                default: ''
+		    },
+        }
     }
 </script>
 <style lang="scss">
