@@ -45,5 +45,12 @@
             width:100%;
             height:100%;
         }
+
+        .swiper-pagination{
+            width:95%;
+            text-align: right;
+            position: absolute;
+            bottom: 4rem;
+        }
     }
 </style>

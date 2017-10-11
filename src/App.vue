@@ -21,7 +21,7 @@
       <div class='cover'></div>
     </aside>
     <keep-alive>
-      <router-view></router-view>
+      <router-view class="app-view"></router-view>
     </keep-alive>
   </div>
 </template>
@@ -74,8 +74,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #fff;
-  height:100%;
-  position:relative;
+  
 
   header{
 	  width: 100%;
@@ -162,6 +161,11 @@ export default {
 
   .delay.aside{
     visibility: visible;
+  }
+
+  .app-view{
+    position: absolute;
+    width: 100%;
   }
 
   
