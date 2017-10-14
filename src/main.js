@@ -6,6 +6,7 @@ import router from './router'
 import swiper from './components/swiper/swiper.vue'
 
 Vue.config.productionTip = false
+Vue.prototype.global = new Vue();
 Vue.component(swiper.name,swiper)
 
 /* eslint-disable no-new */
@@ -15,4 +16,6 @@ const a = new Vue({
   template: '<App/>',
   components: { App }
 })
+
+
 

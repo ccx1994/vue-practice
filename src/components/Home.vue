@@ -7,18 +7,59 @@
     </my-swiper>
     <div class="article-list" v-for="article in articleList">
       <div class="date">{{article.date.substring(0,4)+"/"+article.date.substring(4,6)+"/"+article.date.substring(6,8)}}</div>
-      <div class="article" v-for="detail in article.stories">
+      <div class="article" v-for="detail in article.stories" @click="jump">
         <img>
         <span>{{detail.title}}</span>
+        <span @change-title = "changeTitle">{{title}}</span>
       </div>
     </div>
+    <input v-model="article.newTitle">
+    <receive v-bind="article"></receive>
   </div>
+  
 </template>
 
 <script>
 import api from '../api/index';
+
+let receive = {
+    template: '<div class="box1">{{newTitle}}{{newContend}}</div>',
+    props:{
+      newTitle:{
+        type:String,
+        default:"这才是新名字"
+      },
+      newContend:{
+        type:String,
+        default:"这才是新名字"
+      }
+    },
+    data(){
+        return {
+            //newTitle:'',
+            //newContend:''
+        }
+    },
+    mounted: function() {
+        let that = this;
+        
+        this.global.$on("change-title", function(name) {
+            console.log(1111111111);
+            console.log(name);
+            that.newTitle = name.b;
+        })
+
+        this.global.$on("change-contend", function(contend) {
+            
+            that.newContend = contend;
+        })
+    }
+}
 export default {
   name: 'home',
+  components:{
+    receive
+  },
   mounted: function() {
     this.getBanners();
     let swiper = this.$refs.swiper;
@@ -37,7 +78,12 @@ export default {
     return {
       banners: [],
       swiper: '',
-      articleList:[]
+      articleList:[],
+      title:'',
+      article:{
+        newTitle:"这个名字很精彩",
+        newContend:"这个内容更精彩"
+      }
     }
   },
   methods: {
@@ -55,6 +101,12 @@ export default {
       }).catch(function(data) {
 
       })
+    },
+    jump() {
+      this.$router.push({path:'/article'})
+    },
+    changeTitle(name){
+      this.title = name;
     }
   }
 }
